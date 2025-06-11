@@ -1,0 +1,84 @@
+<div class="results-container card mb-4" id="analysis-display-section">
+    <div class="card-header">
+        <h3>Analysis Summary</h3>
+        <div class="text-muted small">
+            Compare analysis based on initial question vs. refined queries
+        </div>
+    </div>
+    <div class="card-body">
+        
+        <div id="analysis-request" class="text-center py-4">
+            <p class="mb-4">Ready to see how the additional refinement queries enhanced your analysis?</p>
+            <h5 class="mb-3">Do you want us to collect the insights and assist with decision analysis based on executed query results?</h5>
+            <button id="request-analysis-btn" class="btn btn-primary" onclick="analysisRequestSubmit()">
+                <i class="fas fa-chart-bar me-2"></i>Yes, I'm interested in reviewing the analysis
+            </button>
+        </div>
+
+        
+        <div id="analysis-streaming" class="streaming-container" style="display: none;">
+            <div class="stream-status">
+                <span class="status-icon status-connecting"></span>
+                <span id="analysis-status">Initializing analysis...</span>
+            </div>
+            <div class="stream-progress">
+                <div id="analysis-progress-bar" class="progress-bar" style="width: 0%"></div>
+            </div>
+            <div class="thinking-indicator mt-3">
+                <span>Processing data</span>
+                <span class="thinking-dots">
+                    <span class="thinking-dot"></span>
+                    <span class="thinking-dot"></span>
+                    <span class="thinking-dot"></span>
+                </span>
+            </div>
+            <div id="analysis-message" class="streaming-text mt-3"></div>
+        </div>
+
+        
+        <div id="analysis-loading" class="text-center py-4" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading analysis...</span>
+            </div>
+            <p class="mt-2">Generating comparative analysis...</p>
+        </div>
+
+        
+        <div id="analysis-results" class="py-3" style="display: none;">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Based on Initial Question Only</h5>
+                        </div>
+                        <div class="card-body" id="initial-analysis">
+                            
+                            <div class="placeholder-content text-muted">
+                                <p>Loading initial analysis...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Based on Initial Question & Refinements</h5>
+                        </div>
+                        <div class="card-body" id="comprehensive-analysis">
+                            
+                            <div class="placeholder-content text-muted">
+                                <p>Loading comprehensive analysis...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>Understanding the Analysis</h5>
+                <p>The left panel shows analysis based solely on your initial question. The right panel shows how additional refinement queries have expanded and improved the analysis, potentially revealing new insights or considerations for your decision.</p>
+            </div>
+        </div>
+    </div>
+</div>

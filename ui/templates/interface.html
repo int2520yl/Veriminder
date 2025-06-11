@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Data Analysis Tool{% endblock %}
+
+{% block header_actions %}
+{% if not form_readonly %}
+<a href="{{ url_for('interface.index', start_new=1) }}" class="btn btn-primary">
+    <i class="fas fa-plus-circle me-2"></i>New Analysis
+</a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            
+            {% include 'partials/decision_question_form.html' %}
+
+            
+            <div id="suggestions-container" style="display: none;">
+                {% include 'partials/suggestion_selection_form.html' %}
+            </div>
+
+            
+            <div id="analysis-container" style="display: none;">
+                {% include 'partials/analysis_display.html' %}
+            </div>
+
+            
+            <div id="feedback-container" style="display: none;">
+                {% include 'partials/feedback_form.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.datasetId = "{{ dataset_id }}";
+    window.userId = "{{ user_id }}";
+    window.isStudyMode = {{ form_readonly|tojson }};
+
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("Interface initialized with:", {
+            datasetId: window.datasetId,
+            userId: window.userId,
+            isStudyMode: window.isStudyMode
+        });
+
+        if (window.isStudyMode) {
+            const questionField = document.getElementById('question');
+            const decisionField = document.getElementById('decision');
+
+            if (questionField) questionField.value = `{{ question_text|safe }}`;
+            if (decisionField) decisionField.value = `{{ decision_text|safe }}`;
+
+            document.body.setAttribute('data-study-mode', 'true');
+        }
+    });
+</script>
+{% endblock %}
+
+{% block scripts %}
+
+<script src="{{ url_for('static', filename='js/user_action_handler.js') }}"></script>
+<script src="{{ url_for('static', filename='js/server_response_display.js') }}"></script>
+{% endblock %}

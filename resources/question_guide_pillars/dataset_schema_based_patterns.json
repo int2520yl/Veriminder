@@ -1,0 +1,419 @@
+  {
+  "document_metadata": {
+    "document_title": "Table Schema Inference Domains",
+    "document_theme": "Systematic Assessment of Data Table Structures and Relationships",
+    "version": "1.0",
+    "references": [
+      "Kimball, R. & Ross, M. (2013). The Data Warehouse Toolkit (3rd ed.). Wiley.",
+      "Inmon, W.H. (2005). Building the Data Warehouse (4th ed.). Wiley."
+    ]
+  },
+  "categories": [
+    {
+      "category_name": "Temporal Attributes",
+      "category_description": "Time-based considerations within a dataset",
+      "items": [
+        {
+          "item_name": "temporal_type",
+          "item_description": "Nature of temporal representation",
+          "query_considerations": [
+            "Is the data stored at discrete time points or intervals?",
+            "Does the dataset use date, datetime, or other timestamp formats?",
+            "Are timezones or offsets standardized if relevant?"
+          ],
+          "sql_query_considerations": [
+            "Use appropriate SQL date/time data types and functions (e.g., DATEPART).",
+            "Ensure consistency in grouping (e.g., monthly vs. daily aggregates)."
+          ]
+        },
+        {
+          "item_name": "temporal_patterns",
+          "item_description": "Recurring cycles or trends in time-series data",
+          "query_considerations": [
+            "Are there known seasonal patterns or cyclical events?",
+            "Do we see trends that repeat annually or monthly?",
+            "Are any anomalies aligned with time-specific factors?"
+          ],
+          "sql_query_considerations": [
+            "Use window functions (e.g., PARTITION BY date) to detect periodic fluctuations.",
+            "Compare year-over-year or month-over-month aggregates to reveal cyclical changes."
+          ]
+        },
+        {
+          "item_name": "temporal_coverage",
+          "item_description": "Completeness and continuity of time-based data",
+          "query_considerations": [
+            "Is the dataset missing certain months or years?",
+            "Are the time intervals consistent across the entire dataset?",
+            "How are holiday periods or weekends represented?"
+          ],
+          "sql_query_considerations": [
+            "Perform outer joins on a calendar table to highlight missing periods.",
+            "Check for abrupt gaps or cluster of missing date ranges using GROUP BY date ranges."
+          ]
+        },
+        {
+          "item_name": "temporal_comparison",
+          "item_description": "Baseline or reference periods for time-based analysis",
+          "query_considerations": [
+            "What is the best baseline period to compare with current data?",
+            "Are historical norms established or consistent enough for valid reference?",
+            "Do special events (policy changes) create discontinuities in comparisons?"
+          ],
+          "sql_query_considerations": [
+            "Use subqueries to compare current period metrics vs. a prior period’s metrics (e.g., year-on-year).",
+            "Apply date boundaries in WHERE clauses to isolate pre- vs. post-policy intervals."
+          ]
+        }
+      ]
+    },
+    {
+      "category_name": "Categorical Attributes",
+      "category_description": "Properties of non-numeric fields that classify or group data",
+      "items": [
+        {
+          "item_name": "category_structure",
+          "item_description": "How categorical values are organized",
+          "query_considerations": [
+            "Are categories purely nominal or is there a hierarchical relationship (e.g., region -> district -> school)?",
+            "How many distinct category values exist?",
+            "Do categories nest or have parent/child relationships?"
+          ],
+          "sql_query_considerations": [
+            "Use GROUP BY on nominal or hierarchical columns to explore distribution of categories.",
+            "Check for consistent naming or normalization (e.g., ‘LA’ vs. ‘Los Angeles’)."
+          ]
+        },
+        {
+          "item_name": "category_distribution",
+          "item_description": "Representation and balance among categories",
+          "query_considerations": [
+            "Are some categories underrepresented or extremely rare?",
+            "Do certain categories dominate the dataset and skew metrics?",
+            "Is the category distribution stable over time?"
+          ],
+          "sql_query_considerations": [
+            "Apply COUNT(*) or percentage breakdown by category (GROUP BY category).",
+            "Compare category frequency over different time slices or subsets."
+          ]
+        },
+        {
+          "item_name": "category_validity",
+          "item_description": "Accuracy and appropriateness of category labels",
+          "query_considerations": [
+            "Do category values match expected enumerations (e.g., official codes)?",
+            "Are there potential coding errors or misspellings?",
+            "Have category definitions changed over time?"
+          ],
+          "sql_query_considerations": [
+            "JOIN category codes with a reference table to identify unrecognized or invalid codes.",
+            "Use conditional checks (CASE WHEN) to detect unusual or out-of-scope values."
+          ]
+        },
+        {
+          "item_name": "category_coverage",
+          "item_description": "Completeness of how categories span their domain",
+          "query_considerations": [
+            "Are some expected categories missing entirely?",
+            "Are there null category fields that might represent missing data?",
+            "Do categories logically exclude each other (mutual exclusivity) or overlap?"
+          ],
+          "sql_query_considerations": [
+            "Look for missing categories by joining to a ‘master category list’ and checking for unmatched records.",
+            "Scan for multiple category assignments for the same record if only one is allowed."
+          ]
+        }
+      ]
+    },
+    {
+      "category_name": "Numerical Attributes",
+      "category_description": "Quantitative fields, their distributions, and data quality factors",
+      "items": [
+        {
+          "item_name": "scale_type",
+          "item_description": "Measurement scale or level (interval, ratio, ordinal)",
+          "query_considerations": [
+            "Are zero points meaningful or arbitrary?",
+            "Does the data measure something with fixed bounds (e.g., 0–1 rates)?",
+            "Are negative values possible or valid?"
+          ],
+          "sql_query_considerations": [
+            "Check for negative or zero values in numeric columns where they may not make sense.",
+            "Use constraints or validation checks (e.g., data_type constraints, table constraints)."
+          ]
+        },
+        {
+          "item_name": "distribution_characteristics",
+          "item_description": "Properties like mean, median, standard deviation, or skew",
+          "query_considerations": [
+            "Is the data normally distributed, heavily skewed, or multimodal?",
+            "Which measure of central tendency is most accurate for this data?",
+            "What range and variance do we see across the dataset?"
+          ],
+          "sql_query_considerations": [
+            "Calculate average, median (with specialized functions or approximate methods), min, max, and standard deviation (if supported).",
+            "Compare distribution across subgroups or over time (GROUP BY)."
+          ]
+        },
+        {
+          "item_name": "outlier_patterns",
+          "item_description": "Detection and handling of extreme values",
+          "query_considerations": [
+            "Do outliers represent legitimate extremes or data errors?",
+            "How do outliers affect aggregated statistics?",
+            "Should outliers be capped, removed, or flagged for separate analysis?"
+          ],
+          "sql_query_considerations": [
+            "Use percentile-based queries (e.g., top 1% / bottom 1%) to identify outliers.",
+            "Implement filtering logic (WHERE value < X) if outliers are known errors or spurious data."
+          ]
+        },
+        {
+          "item_name": "precision_accuracy",
+          "item_description": "Rounding, truncation, or measurement error issues",
+          "query_considerations": [
+            "At what decimal precision is the data stored?",
+            "Do different sources store numeric data with varying precision?",
+            "Could rounding significantly affect calculations (e.g., sums, averages)?"
+          ],
+          "sql_query_considerations": [
+            "Use the appropriate column type (DECIMAL, FLOAT) and scale to avoid losing resolution.",
+            "Include rounding logic (ROUND(value, N)) if consistent decimal places are required."
+          ]
+        }
+      ]
+    },
+    {
+      "category_name": "Relationship Attributes",
+      "category_description": "Inter-variable associations, functional dependencies, and potential causal links",
+      "items": [
+        {
+          "item_name": "correlation_patterns",
+          "item_description": "Associations between variables, possibly indicating trends",
+          "query_considerations": [
+            "Which variables tend to rise or fall together?",
+            "Are these associations consistent over time or subgroups?",
+            "Could the relationship be purely coincidental or spurious?"
+          ],
+          "sql_query_considerations": [
+            "Use JOIN or grouping to see how changes in one column align with changes in another.",
+            "Apply correlation-like checks (though pure SQL is limited—some DBs have correlation functions)."
+          ]
+        },
+        {
+          "item_name": "functional_dependencies",
+          "item_description": "If certain fields fully determine the value of others",
+          "query_considerations": [
+            "Do composite keys or unique constraints exist that enforce dependencies?",
+            "Are there known relationships (e.g., official codes) that strictly define other attributes?",
+            "Can violations of these dependencies occur in the data?"
+          ],
+          "sql_query_considerations": [
+            "Check for duplicates in supposed unique columns (e.g., GROUP BY and HAVING COUNT(*)>1).",
+            "Compare columns to ensure consistency (e.g., city->zip code)."
+          ]
+        },
+        {
+          "item_name": "hierarchical_relationships",
+          "item_description": "Tree-like or multi-level structures (e.g., region -> district -> school)",
+          "query_considerations": [
+            "How many levels exist in the hierarchy?",
+            "Are some branches unbalanced or missing intermediate levels?",
+            "Is rollup or drill-down needed to analyze different granularity levels?"
+          ],
+          "sql_query_considerations": [
+            "Self-joins or adjacency list patterns if hierarchical data is stored as parent-child references.",
+            "Use hierarchical queries (if supported) to confirm the structure is consistent."
+          ]
+        },
+        {
+          "item_name": "causal_relationships",
+          "item_description": "Potential cause-effect patterns (beyond mere correlation)",
+          "query_considerations": [
+            "Do we have time-sequenced data to hint at cause preceding effect?",
+            "Could confounding variables explain observed associations?",
+            "Is the dataset scope sufficient to assert or test causality?"
+          ],
+          "sql_query_considerations": [
+            "Use time-based ordering (ORDER BY date) to see if one variable changes before another.",
+            "JOIN additional confounding data sets (e.g., demographic or economic indicators)."
+          ]
+        }
+      ]
+    },
+    {
+      "category_name": "Data Quality",
+      "category_description": "Issues affecting completeness, consistency, and overall reliability of the dataset",
+      "items": [
+        {
+          "item_name": "completeness",
+          "item_description": "Presence of missing or null data in key fields",
+          "query_considerations": [
+            "What percentage of records have missing fields?",
+            "Are missing values random or systematically concentrated in certain subgroups?",
+            "Could missingness bias the analysis outcomes?"
+          ],
+          "sql_query_considerations": [
+            "Use COUNT(field) vs. COUNT(*) or check for NULL fields to gauge completeness.",
+            "Check patterns of missing data by grouping on other attributes (WHERE field IS NULL)."
+          ]
+        },
+        {
+          "item_name": "consistency",
+          "item_description": "Detecting contradictions or logical misalignments in the data",
+          "query_considerations": [
+            "Do any columns conflict (e.g., grade level is negative)?",
+            "Are codes used consistently across tables?",
+            "Do derived fields match source fields (e.g., total FRPM vs. sum of free + reduced)?"
+          ],
+          "sql_query_considerations": [
+            "Apply validations (e.g., CROSS JOIN or subqueries) to confirm sums match and no negative values appear.",
+            "JOIN dimension tables to catch code mismatches."
+          ]
+        },
+        {
+          "item_name": "timeliness",
+          "item_description": "Freshness or staleness of the dataset for current decisions",
+          "query_considerations": [
+            "How recently was the data updated?",
+            "Are different parts of the data from different time periods, creating mismatches?",
+            "Do we require real-time data or are monthly updates sufficient?"
+          ],
+          "sql_query_considerations": [
+            "Filter or sort by last_update timestamps to check recency.",
+            "Use date columns to see if certain tables lag behind others in updates."
+          ]
+        },
+        {
+          "item_name": "representativeness",
+          "item_description": "Extent to which the dataset reflects the overall population of interest",
+          "query_considerations": [
+            "Were certain districts or demographics excluded in data collection?",
+            "Are voluntary reporting biases present?",
+            "Is the sample large enough to represent subgroups?"
+          ],
+          "sql_query_considerations": [
+            "Check coverage by comparing total records to official counts of the population.",
+            "Group by region or demographic fields to see if some areas or groups are under-sampled."
+          ]
+        }
+      ]
+    },
+    {
+      "category_name": "Cross Table Relationships",
+      "category_description": "Linkages that span multiple tables in a relational schema",
+      "items": [
+        {
+          "item_name": "join_paths",
+          "item_description": "How different tables connect or link to each other",
+          "query_considerations": [
+            "Are join keys well-defined (foreign keys, etc.)?",
+            "Are the relationships one-to-one, one-to-many, or many-to-many?",
+            "Could multiple join paths produce conflicting or duplicate records?"
+          ],
+          "sql_query_considerations": [
+            "Check table constraints or indexes for referencing foreign keys.",
+            "Use explicit join conditions (e.g., ON a.school_id = b.school_id) to avoid Cartesian products."
+          ]
+        },
+        {
+          "item_name": "aggregation_relationships",
+          "item_description": "Summarizing detail records into higher-level groupings",
+          "query_considerations": [
+            "Do we have dimension/fact structures that support rollups?",
+            "Are multiple valid aggregation levels possible (e.g., daily vs. monthly)?",
+            "How does the schema handle pre-aggregated data for performance?"
+          ],
+          "sql_query_considerations": [
+            "Apply GROUP BY in combination with dimension tables for summarized metrics.",
+            "Check for conflicting or redundant aggregates across different tables (e.g., daily vs. monthly might not match)."
+          ]
+        },
+        {
+          "item_name": "data_redundancy",
+          "item_description": "Duplicate or repeated information across related tables",
+          "query_considerations": [
+            "Is information intentionally denormalized for performance?",
+            "Does duplication risk inconsistencies if not updated synchronously?",
+            "Are multiple references to the same entity stored in separate tables?"
+          ],
+          "sql_query_considerations": [
+            "Compare rows from different tables to see if data is repeated or out of sync.",
+            "Look for distinct vs. all row counts and match key columns."
+          ]
+        },
+        {
+          "item_name": "referential_integrity",
+          "item_description": "Validity of relationships between primary and foreign keys",
+          "query_considerations": [
+            "Do all foreign key values have matching primary key entries?",
+            "Are there orphan records with missing references?",
+            "How does the schema handle invalid references or updates?"
+          ],
+          "sql_query_considerations": [
+            "Use LEFT JOIN or FULL OUTER JOIN to discover references that don’t match any primary key.",
+            "Check constraints or error logs that track referential violations."
+          ]
+        }
+      ]
+    },
+    {
+      "category_name": "Attribute Transformation",
+      "category_description": "Potential data transformations to enhance or adjust raw fields",
+      "items": [
+        {
+          "item_name": "normalization",
+          "item_description": "Standardizing values for comparability",
+          "query_considerations": [
+            "Would scaling or normalizing numeric columns improve analysis?",
+            "Do we need per capita or percentage transformations?",
+            "Are different tables using different metric units that must be unified?"
+          ],
+          "sql_query_considerations": [
+            "Use computed columns (e.g., col / population) to get per-student or per-capita metrics.",
+            "Implement consistent numeric scaling across tables if they measure the same concept differently."
+          ]
+        },
+        {
+          "item_name": "discretization",
+          "item_description": "Binning continuous values into categories",
+          "query_considerations": [
+            "Is threshold-based grouping (e.g., free meal rate > 0.5) more interpretable?",
+            "Do domain standards define certain bins (e.g., poverty levels)?",
+            "Could large continuous ranges benefit from chunking to reduce noise?"
+          ],
+          "sql_query_considerations": [
+            "Use CASE WHEN statements to create buckets, e.g. (CASE WHEN rate < 0.2 THEN 'Low' WHEN...).",
+            "Compare equal-width vs. equal-frequency binning by counting records in each bin."
+          ]
+        },
+        {
+          "item_name": "aggregation",
+          "item_description": "Summarizing multiple data points for higher-level insights",
+          "query_considerations": [
+            "Would monthly or yearly rollups be more actionable than daily records?",
+            "Do we need to combine sub-categories (e.g., free + reduced) for a simpler measure (FRPM)?",
+            "Are hierarchical rollups necessary for region, district, school, etc.?"
+          ],
+          "sql_query_considerations": [
+            "Use GROUP BY with date truncation (YEAR(date_col)) or hierarchical fields (district_id).",
+            "Create summarized views or materialized queries for performance and simpler analysis."
+          ]
+        },
+        {
+          "item_name": "imputation",
+          "item_description": "Filling missing values with estimated or plausible data",
+          "query_considerations": [
+            "Is it appropriate to impute missing data in this domain?",
+            "Which imputation strategy (mean, median, interpolation) is justifiable?",
+            "Will imputations significantly alter aggregated results?"
+          ],
+          "sql_query_considerations": [
+            "Write UPDATE statements or use expressions (COALESCE) to fill missing values with estimates.",
+            "Log or track which records were imputed to avoid confusion or misinterpretation."
+          ]
+        }
+      ]
+    }
+  ]
+}

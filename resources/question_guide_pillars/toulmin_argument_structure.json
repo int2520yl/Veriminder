@@ -1,0 +1,366 @@
+{
+  "document_metadata": {
+    "document_title": "Toulmin Argument Structure",
+    "document_theme": "Framework for Forming Robust Data-Driven Arguments",
+    "version": "1.0",
+    "references": [
+      "Toulmin, S. (1958). The Uses of Argument. Cambridge University Press."
+    ]
+  },
+  "categories": [
+    {
+      "category_name": "Argument Components",
+      "category_description": "Core elements in Toulmin’s model for developing and evaluating arguments.",
+      "items": [
+        {
+          "item_name": "Claim",
+          "item_description": "The conclusion or assertion derived from the data analysis.",
+          "sub_items": [
+            {
+              "aspect_name": "claim_clarity",
+              "description": "Precision and specificity of the claim",
+              "query_considerations": [
+                "Is the claim specific and measurable?",
+                "Does the claim’s scope match the original decision context?",
+                "Is the claim stated in actionable terms for stakeholders?"
+              ],
+              "sql_query_considerations": [
+                "Ensure the SELECT query columns align with exactly what the claim asserts (e.g., total FRPM vs. percentage).",
+                "Use WHERE clauses to filter precisely, mirroring the claim’s scope."
+              ]
+            },
+            {
+              "aspect_name": "claim_relevance",
+              "description": "Connection to the original decision context",
+              "query_considerations": [
+                "Does the claim address the core decision need?",
+                "Is the claim tied to the key dataset fields relevant to the decision?",
+                "Does the claim avoid going beyond the dataset’s domain?"
+              ],
+              "sql_query_considerations": [
+                "Cross-check JOIN conditions to ensure relevant tables are included (e.g., linking student eligibility data to school IDs).",
+                "Validate that the claim uses fields pertinent to the decision (e.g., free meal eligibility)."
+              ]
+            },
+            {
+              "aspect_name": "claim_significance",
+              "description": "Importance and materiality of the claim",
+              "query_considerations": [
+                "Is the effect size or difference meaningful for policy or business decisions?",
+                "Does the claim highlight a notable insight rather than a trivial result?",
+                "Will the claim materially affect stakeholders?"
+              ],
+              "sql_query_considerations": [
+                "Consider grouping or aggregations (GROUP BY) that reveal meaningful differences (e.g., comparing average free meal rates).",
+                "Check if the difference found in the query meets a practical threshold."
+              ]
+            },
+            {
+              "aspect_name": "claim_comparability",
+              "description": "Reference points for contextualizing the claim",
+              "query_considerations": [
+                "How does this claim compare to relevant benchmarks?",
+                "What baseline or time-series data helps contextualize the claim?",
+                "Is the claim presented in absolute or relative terms?"
+              ],
+              "sql_query_considerations": [
+                "Consider UNION or subqueries to pull comparisons (e.g., state averages).",
+                "Use calculated fields (e.g., ratio or difference from a baseline) to make the claim more interpretable."
+              ]
+            }
+          ]
+        },
+        {
+          "item_name": "Evidence",
+          "item_description": "Data, facts, or observations supporting the claim.",
+          "sub_items": [
+            {
+              "aspect_name": "evidence_sufficiency",
+              "description": "Adequacy of the supporting data",
+              "query_considerations": [
+                "Is there enough data to substantiate the claim?",
+                "Does the evidence address all necessary factors?",
+                "Are critical data points missing or incomplete?"
+              ],
+              "sql_query_considerations": [
+                "Check total row counts and coverage (e.g., ensure that all schools in the county are included).",
+                "Include LEFT JOIN or other join types to detect missing references or coverage gaps."
+              ]
+            },
+            {
+              "aspect_name": "evidence_relevance",
+              "description": "Connection between evidence and claim",
+              "query_considerations": [
+                "Is every piece of evidence directly tied to the claim?",
+                "Are extraneous data points ignored or clearly explained?",
+                "Do we highlight only evidence that truly matters to the decision?"
+              ],
+              "sql_query_considerations": [
+                "Avoid pulling unnecessary columns—focus on those that directly validate the claim.",
+                "Use precise WHERE conditions to match the claim’s domain (e.g., county='Alameda')."
+              ]
+            },
+            {
+              "aspect_name": "evidence_validity",
+              "description": "Soundness and reliability of the evidence",
+              "query_considerations": [
+                "Are data sources authoritative or prone to error?",
+                "Has the dataset passed validation or cleaning steps?",
+                "Do we trust the measurement process behind each field?"
+              ],
+              "sql_query_considerations": [
+                "In queries, check for anomalies such as out-of-range values or null entries.",
+                "Consider subqueries that filter out inconsistent records (e.g., negative meal counts)."
+              ]
+            },
+            {
+              "aspect_name": "evidence_comprehensiveness",
+              "description": "Breadth and diversity of supporting evidence",
+              "query_considerations": [
+                "Do we incorporate multiple data perspectives (e.g., numeric, categorical)?",
+                "Are various subpopulations or subgroups represented?",
+                "Does the evidence span the entire relevant timeframe?"
+              ],
+              "sql_query_considerations": [
+                "Combine multiple tables (JOIN) or aggregated metrics to ensure we’re not missing subgroups.",
+                "Use time-window filters to capture a suitable coverage period."
+              ]
+            }
+          ]
+        },
+        {
+          "item_name": "Warrant",
+          "item_description": "The logical connection between the evidence and the claim.",
+          "sub_items": [
+            {
+              "aspect_name": "warrant_explicitness",
+              "description": "Clarity of the reasoning chain",
+              "query_considerations": [
+                "Is the reasoning process spelled out in detail?",
+                "Are there hidden or implicit assumptions in the logic?",
+                "Does each step in the reasoning follow transparently from the data?"
+              ],
+              "sql_query_considerations": [
+                "Break complex queries into CTEs (common table expressions) for clarity.",
+                "Document or comment SQL steps to show how partial results build the final conclusion."
+              ]
+            },
+            {
+              "aspect_name": "warrant_validity",
+              "description": "Soundness of the logical reasoning",
+              "query_considerations": [
+                "Does the approach avoid known fallacies or misinterpretations?",
+                "Is the reasoning pattern aligned with standard analysis methods?",
+                "Do the data transformations remain valid throughout the analysis?"
+              ],
+              "sql_query_considerations": [
+                "Use well-accepted statistical or grouping methods, avoiding unverified shortcuts.",
+                "Cross-check logic with test queries or smaller subsets."
+              ]
+            },
+            {
+              "aspect_name": "warrant_strength",
+              "description": "Degree of support the evidence provides",
+              "query_considerations": [
+                "Are we demonstrating necessity, sufficiency, or correlation?",
+                "Is the evidence directly causative or merely correlational?",
+                "How strongly does each dataset variable link to the claim?"
+              ],
+              "sql_query_considerations": [
+                "Consider correlation or join across multiple variables (e.g., meal eligibility vs. performance).",
+                "Use numeric comparisons (HAVING clauses) to see if the result strongly meets a threshold."
+              ]
+            },
+            {
+              "aspect_name": "warrant_applicability",
+              "description": "Appropriateness of the reasoning for the domain",
+              "query_considerations": [
+                "Are domain-specific constraints recognized?",
+                "Does the argument hold under typical domain interpretations?",
+                "Do we treat the data in ways consistent with subject-matter standards?"
+              ],
+              "sql_query_considerations": [
+                "Check domain constraints (e.g., valid grade-level ranges).",
+                "Ensure domain filters (like K-12 vs. ages 5–17) are accurately applied."
+              ]
+            }
+          ]
+        },
+        {
+          "item_name": "Backing",
+          "item_description": "Support for the warrant itself—why we trust this logic.",
+          "sub_items": [
+            {
+              "aspect_name": "theoretical_backing",
+              "description": "Established theories or principles supporting the logic",
+              "query_considerations": [
+                "Do recognized frameworks back this type of reasoning?",
+                "Is there a known theoretical model explaining these data relationships?",
+                "Is the chosen approach standard in the field?"
+              ],
+              "sql_query_considerations": [
+                "Reference recognized calculation formulas or academically accepted methods (e.g., standard ways of computing FRPM rates).",
+                "Use standardized queries or code patterns used by domain experts."
+              ]
+            },
+            {
+              "aspect_name": "empirical_backing",
+              "description": "Historical or prior empirical support",
+              "query_considerations": [
+                "Do similar analyses from prior research confirm these results?",
+                "Are there case studies validating this pattern?",
+                "Has a pilot dataset or repeated study shown consistency?"
+              ],
+              "sql_query_considerations": [
+                "Compare results to historical tables or archived queries to check consistency.",
+                "Replicate standard queries used successfully in past analyses."
+              ]
+            },
+            {
+              "aspect_name": "process_backing",
+              "description": "Methodological support for how the analysis is done",
+              "query_considerations": [
+                "Were appropriate steps (like data cleaning) carried out systematically?",
+                "Are SQL queries carefully tested for performance and correctness?",
+                "Were quality control measures in place (e.g., code review)?"
+              ],
+              "sql_query_considerations": [
+                "Log changes in data cleaning scripts or ETL processes to confirm consistent methodology.",
+                "Use query plans or indexing strategies to ensure reliability of results."
+              ]
+            },
+            {
+              "aspect_name": "authority_backing",
+              "description": "Recognition from domain experts or official guidelines",
+              "query_considerations": [
+                "Is this methodology endorsed by experts in education or finance?",
+                "Does it align with recognized best practices or regulations?",
+                "Is there an official standard (state or national) that guides this approach?"
+              ],
+              "sql_query_considerations": [
+                "Adhere to official definitions (e.g., state definitions of ‘free meal eligibility’).",
+                "Implement recommended calculations (like official FRPM formula)."
+              ]
+            }
+          ]
+        },
+        {
+          "item_name": "Qualifier",
+          "item_description": "Degrees of certainty or known limitations of the claim.",
+          "sub_items": [
+            {
+              "aspect_name": "confidence_level",
+              "description": "Statistical or conceptual certainty in the result",
+              "query_considerations": [
+                "Is there a confidence interval or significance test result?",
+                "Could random variance undermine the result?",
+                "Do we specify the level of confidence we hold?"
+              ],
+              "sql_query_considerations": [
+                "If relevant, run summary statistics or produce intervals (though pure SQL may require external stats tools).",
+                "Consider sample size in GROUP BY queries to gauge reliability."
+              ]
+            },
+            {
+              "aspect_name": "scope_boundaries",
+              "description": "Applicability constraints on the claim",
+              "query_considerations": [
+                "Which populations (counties, schools) does this apply to?",
+                "Could it differ across subgroups or time periods?",
+                "Does the claim only hold under certain conditions?"
+              ],
+              "sql_query_considerations": [
+                "Add conditional WHERE statements to isolate relevant subgroups.",
+                "Partition queries by region or time to see if patterns differ significantly."
+              ]
+            },
+            {
+              "aspect_name": "precision_indicators",
+              "description": "Exactness of the measurement or estimate",
+              "query_considerations": [
+                "Is there a margin of error or standard deviation noted?",
+                "Could rounding or measurement errors alter the interpretation?",
+                "Should we present results as ranges or point estimates?"
+              ],
+              "sql_query_considerations": [
+                "Store numeric results to appropriate decimal places and consider rounding approach.",
+                "When using GROUP BY, check STDEV or VARIANCE as well as averages."
+              ]
+            },
+            {
+              "aspect_name": "temporal_qualifiers",
+              "description": "Time-related boundaries for the claim",
+              "query_considerations": [
+                "Over what timeframe are these results valid?",
+                "Could the phenomenon change next year or in different seasons?",
+                "Do we have data that demonstrates short-term vs. long-term patterns?"
+              ],
+              "sql_query_considerations": [
+                "Use date/time columns in the WHERE clause to limit queries to the relevant period.",
+                "Compare multiple time windows if you suspect changes over time."
+              ]
+            }
+          ]
+        },
+        {
+          "item_name": "Rebuttal",
+          "item_description": "Scenarios or conditions where the claim might fail.",
+          "sub_items": [
+            {
+              "aspect_name": "exception_conditions",
+              "description": "Cases where the pattern is not valid",
+              "query_considerations": [
+                "Are there outlier schools or demographic groups for which the claim fails?",
+                "Could an extreme event (e.g., policy change) make the claim irrelevant?",
+                "Are there structural exceptions unaddressed by the data?"
+              ],
+              "sql_query_considerations": [
+                "Use subqueries to detect outliers or special conditions (e.g., extremely small schools).",
+                "Segment or EXCLUDE certain categories that break typical patterns."
+              ]
+            },
+            {
+              "aspect_name": "alternative_explanations",
+              "description": "Other ways to interpret the same data",
+              "query_considerations": [
+                "Could a correlation be driven by another hidden variable?",
+                "Are we ignoring potential confounders (e.g., school location, budgets)?",
+                "Could a different data slice lead to a conflicting conclusion?"
+              ],
+              "sql_query_considerations": [
+                "Join in additional dimension tables (like geographic or budget data) to test for confounding factors.",
+                "Run separate queries with different grouping columns to see if the pattern holds."
+              ]
+            },
+            {
+              "aspect_name": "sensitivity_factors",
+              "description": "Influences that might drastically alter the conclusion",
+              "query_considerations": [
+                "Is the claim sensitive to minor data changes?",
+                "What if key assumptions (e.g., threshold definitions) were changed?",
+                "Do small differences in certain columns flip the conclusion?"
+              ],
+              "sql_query_considerations": [
+                "Test different numeric cutoffs (e.g., FRPM > .5 vs. FRPM > .6) to see if the conclusion changes.",
+                "Use parameterized queries to systematically vary assumptions."
+              ]
+            },
+            {
+              "aspect_name": "future_invalidators",
+              "description": "Developments that could make the claim obsolete later",
+              "query_considerations": [
+                "What if policies change funding formulas or eligibility definitions?",
+                "Could the economy shift, altering the underlying data distributions?",
+                "Will future updates to the dataset require rechecking these findings?"
+              ],
+              "sql_query_considerations": [
+                "Periodically rerun the same queries after major policy or demographic changes.",
+                "Create versioned snapshots of the dataset to compare with new data in the future."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

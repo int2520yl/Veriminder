@@ -1,0 +1,303 @@
+{
+  "document_metadata": {
+    "document_title": "Counter-Argument Frameworks",
+    "document_theme": "Structured Approaches for Challenging or Revising Decisions",
+    "version": "1.0",
+    "references": [
+      "Popper, K. (1959). The Logic of Scientific Discovery. Hutchinson.",
+      "Lakatos, I. (1976). Proofs and Refutations. Cambridge University Press."
+    ]
+  },
+  "categories": [
+    {
+      "category_name": "Conclusion Rebutters",
+      "category_description": "Challenges aimed at the final decision or conclusion itself",
+      "items": [
+        {
+          "item_name": "alternative_conclusion",
+          "item_description": "Proposing a different outcome from the same evidence",
+          "query_patterns": [
+            "Could the same dataset support a different decision entirely?",
+            "Are there multiple plausible interpretations leading to distinct conclusions?",
+            "Does combining the data differently yield a contradictory result?"
+          ],
+          "sql_query_considerations": [
+            "Run additional queries with different grouping or join strategies to see if the result conflicts with the original conclusion.",
+            "Compare relevant subpopulations or alternative metrics not used in the initial conclusion."
+          ]
+        },
+        {
+          "item_name": "partial_conclusion",
+          "item_description": "Accepting some elements but not the entirety of the conclusion",
+          "query_patterns": [
+            "Which parts of the conclusion are well-founded vs. speculative?",
+            "Could we adopt a limited or phased approach given the data?",
+            "Are certain aspects of the decision more robust than others?"
+          ],
+          "sql_query_considerations": [
+            "Segment the query scope (e.g., analyzing only certain grade levels or districts) to see if partial acceptance is more valid.",
+            "Check whether partial changes in WHERE clauses confirm or deny certain parts of the decision."
+          ]
+        },
+        {
+          "item_name": "scope_limitation",
+          "item_description": "Restricting the conditions or population to which the conclusion applies",
+          "query_patterns": [
+            "In which subgroups or contexts might this conclusion be invalid?",
+            "Under what external conditions does the decision break down?",
+            "Should the conclusion apply only to a subset of the original domain?"
+          ],
+          "sql_query_considerations": [
+            "Use narrower filtering (WHERE region='X') to see if results differ drastically among subregions.",
+            "Compare different demographic slices to confirm if the conclusion holds across all or just some subsets."
+          ]
+        },
+        {
+          "item_name": "conclusion_uncertainty",
+          "item_description": "Highlighting the margin of error or unpredictability in the outcome",
+          "query_patterns": [
+            "How sure are we that this decision is correct?",
+            "What potential variability or error margins exist in the data?",
+            "Could the conclusion shift if certain data assumptions changed?"
+          ],
+          "sql_query_considerations": [
+            "Calculate confidence intervals or measure standard deviations (where possible).",
+            "Parametrize queries to see how different thresholds alter the outcome (e.g., FRPM > 0.4 vs. 0.5)."
+          ]
+        }
+      ]
+    },
+    {
+      "category_name": "Premise Rebutters",
+      "category_description": "Challenges to the factual basis or data underlying the decision",
+      "items": [
+        {
+          "item_name": "factual_accuracy",
+          "item_description": "Questioning data correctness or reliability",
+          "query_patterns": [
+            "Are there contradictory data sources?",
+            "Have known data issues been flagged or resolved?",
+            "Could data entry or collection errors skew the results?"
+          ],
+          "sql_query_considerations": [
+            "Cross-verify with external or official reference data (JOIN external table).",
+            "Check for inconsistencies (e.g., negative meal counts) that indicate data entry errors."
+          ]
+        },
+        {
+          "item_name": "data_quality",
+          "item_description": "Highlighting limitations in data completeness or cleanliness",
+          "query_patterns": [
+            "Is there substantial missing or null data in critical columns?",
+            "Do we see data from mismatched time periods that hamper direct comparison?",
+            "Could outliers be data-collection anomalies rather than real phenomena?"
+          ],
+          "sql_query_considerations": [
+            "Apply data-quality checks (IS NULL checks, row count comparisons) to gauge completeness.",
+            "Segment out suspected anomalies to see if the conclusion changes drastically."
+          ]
+        },
+        {
+          "item_name": "sampling_adequacy",
+          "item_description": "Questioning whether the dataset fairly represents the entire population",
+          "query_patterns": [
+            "Is the sample large enough to be statistically robust?",
+            "Are certain subgroups systematically underrepresented?",
+            "Was data self-selected or from a biased source?"
+          ],
+          "sql_query_considerations": [
+            "Compare the dataset’s coverage against known population totals (JOIN with reference counts).",
+            "Use GROUP BY subgroups to identify potential undersampling or oversampling."
+          ]
+        },
+        {
+          "item_name": "measurement_validity",
+          "item_description": "Challenging whether the chosen metrics really capture the phenomenon",
+          "query_patterns": [
+            "Do these variables genuinely reflect the concept we are measuring?",
+            "Are proxies being used, and if so, are they appropriate?",
+            "Have measurement instruments changed over time?"
+          ],
+          "sql_query_considerations": [
+            "Compare alternate metrics in the dataset (e.g., different test scores) to see if they align with the chosen measure.",
+            "Check for abrupt changes in definitions (JOIN with a reference table for policy changes)."
+          ]
+        }
+      ]
+    },
+    {
+      "category_name": "Argument Undercutters",
+      "category_description": "Challenges directed at the reasoning chain from data to conclusion",
+      "items": [
+        {
+          "item_name": "warrant_challenge",
+          "item_description": "Doubts about whether the evidence truly supports the conclusion",
+          "query_patterns": [
+            "Does the data actually prove the claim, or is it merely suggestive?",
+            "Are alternative calculations or queries possible that undermine the conclusion?",
+            "Is the connection between data and decision too indirect?"
+          ],
+          "sql_query_considerations": [
+            "Use different grouping or filtering approaches to test if the relationship remains strong.",
+            "Conduct side-by-side result sets to see if the initial logic might be overreaching."
+          ]
+        },
+        {
+          "item_name": "assumption_challenge",
+          "item_description": "Identifying hidden or questionable assumptions in the reasoning",
+          "query_patterns": [
+            "Are we assuming certain distributions or invariants that might not hold?",
+            "Could domain-specific constraints (like minimum funding levels) undermine an assumption?",
+            "Are we ignoring possible confounding variables?"
+          ],
+          "sql_query_considerations": [
+            "Incorporate additional columns or data sources to test each assumption (e.g., check if socioeconomic data truly correlates with test performance).",
+            "Review the WHERE or JOIN conditions for any unverified leaps (like ignoring partial FRPM data)."
+          ]
+        },
+        {
+          "item_name": "methodology_challenge",
+          "item_description": "Critiquing the analytical or statistical methods used",
+          "query_patterns": [
+            "Is this type of analysis appropriate for the data scale or structure?",
+            "Might a simpler or more advanced approach yield different insights?",
+            "Are standard best practices or recommended procedures being followed?"
+          ],
+          "sql_query_considerations": [
+            "Compare query performance and correctness across different approaches (e.g., subqueries vs. window functions).",
+            "Check if the dataset might benefit from external tools (like specialized statistical software)."
+          ]
+        },
+        {
+          "item_name": "alternative_explanation",
+          "item_description": "Proposing a distinct reason for observed results",
+          "query_patterns": [
+            "Could the correlation be due to an unaccounted-for factor?",
+            "Might a concurrent event (like a new law) explain the changes?",
+            "Are there domain-specific phenomena overshadowing the direct explanation?"
+          ],
+          "sql_query_considerations": [
+            "JOIN or incorporate other variables (like budget data or location) to check for confounding factors.",
+            "Examine the timeline for external events or policy changes that coincide with the observed pattern."
+          ]
+        }
+      ]
+    },
+    {
+      "category_name": "Framing Challenges",
+      "category_description": "Scrutinizing the way a problem or decision is conceptualized",
+      "items": [
+        {
+          "item_name": "problem_definition",
+          "item_description": "Asking if the right question or problem statement is being addressed",
+          "query_patterns": [
+            "Is the dataset truly answering the question we care about?",
+            "Could re-framing the question lead to more relevant metrics?",
+            "Are we focusing on a symptom rather than the root cause?"
+          ],
+          "sql_query_considerations": [
+            "Check if the columns or tables used align with the actual decision context, not a tangential domain.",
+            "Consider alternative queries that reflect different problem framings (e.g., total cost vs. cost per student)."
+          ]
+        },
+        {
+          "item_name": "stakeholder_perspective",
+          "item_description": "Recognizing how different user groups might see or value the data",
+          "query_patterns": [
+            "Do decision makers, teachers, and parents interpret the data differently?",
+            "Are certain stakeholder interests excluded in the current framing?",
+            "Might an alternative breakdown by user group be more relevant?"
+          ],
+          "sql_query_considerations": [
+            "Partition queries by stakeholder group or role (JOIN user_type dimension).",
+            "Compare how results differ if focusing on cost vs. educational outcome metrics."
+          ]
+        },
+        {
+          "item_name": "temporal_framing",
+          "item_description": "Examining short-term vs. long-term perspectives on the decision",
+          "query_patterns": [
+            "Are we focusing too heavily on immediate data at the expense of trends?",
+            "Could a broader historical window reveal different insights?",
+            "Are future projections or forecasts being neglected?"
+          ],
+          "sql_query_considerations": [
+            "Extend the time window in WHERE clauses to cover multiple years, not just the current year.",
+            "Perform trend analysis with ORDER BY date to see if short-term data is misleading or consistent."
+          ]
+        },
+        {
+          "item_name": "scale_framing",
+          "item_description": "Deciding which level of granularity or aggregation is most relevant",
+          "query_patterns": [
+            "Does analyzing at the district level hide large disparities among individual schools?",
+            "Are aggregated metrics overshadowing outliers or subgroups?",
+            "Might a more granular or more global view be more informative?"
+          ],
+          "sql_query_considerations": [
+            "GROUP BY school_id or smaller subunits if district-level aggregates may mask key differences.",
+            "Alternatively, compare results at multiple aggregation levels to ensure consistency."
+          ]
+        }
+      ]
+    },
+    {
+      "category_name": "Implementation Challenges",
+      "category_description": "Practical considerations about putting the decision into action",
+      "items": [
+        {
+          "item_name": "feasibility",
+          "item_description": "Scrutinizing the real-world implementability of the conclusion",
+          "query_patterns": [
+            "Do we have the infrastructure or resources to carry out this decision?",
+            "Are there technical barriers or legal constraints?",
+            "Could workforce or budget limitations derail the plan?"
+          ],
+          "sql_query_considerations": [
+            "Identify resource or cost columns in the dataset to see if the plan is financially viable (JOIN with budget table).",
+            "Check for any policy or permission fields that might block certain actions."
+          ]
+        },
+        {
+          "item_name": "resource_constraints",
+          "item_description": "Highlighting limitations in funding, staff, time, etc.",
+          "query_patterns": [
+            "Do we have enough staff to implement expansions in all target schools?",
+            "Could we rank potential interventions by cost-effectiveness to optimize limited resources?",
+            "Are there trade-offs that must be made if resources are insufficient?"
+          ],
+          "sql_query_considerations": [
+            "Combine cost and outcome data to rank interventions (e.g., ORDER BY cost_per_student).",
+            "Use numeric threshold queries to show how many schools fit within a feasible budget limit."
+          ]
+        },
+        {
+          "item_name": "unintended_consequences",
+          "item_description": "Exploring possible negative side effects or second-order effects",
+          "query_patterns": [
+            "Could focusing all resources on high-need schools deprive moderate-need schools?",
+            "Might financial incentives inadvertently encourage gaming or data manipulation?",
+            "Does a short-term fix create new problems in the long term?"
+          ],
+          "sql_query_considerations": [
+            "Examine how reallocation of resources affects other subsets of the data (e.g., moderate-need schools).",
+            "Review time-series data to see if short-term gains historically led to later declines."
+          ]
+        },
+        {
+          "item_name": "cost_benefit",
+          "item_description": "Questioning the decision’s return on investment or trade-off profile",
+          "query_patterns": [
+            "Do the proposed benefits clearly outweigh the financial/time costs?",
+            "Could a cheaper intervention produce nearly the same results?",
+            "Has a full cost-benefit analysis been computed from the available data?"
+          ],
+          "sql_query_considerations": [
+            "Use numeric calculations (benefits minus costs) or ratio-based queries (benefit/cost).",
+            "Rank potential decisions by net impact or ROI using aggregated columns."
+          ]
+        }
+      ]
+    }
+  ]
+}

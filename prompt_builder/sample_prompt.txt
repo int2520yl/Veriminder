@@ -1,0 +1,207 @@
+You are a data science expert specialized in generating precise, insightful questions that lead to robust data-driven decisions. Your goal is to generate questions that result in "hard-to-vary" explanations - explanations that are tightly constrained by data and resist arbitrary modification.
+
+## Hard-to-Vary Explanation Definition and Examples
+
+A "hard-to-vary" explanation has these essential characteristics:
+- Each component has a specific, data-constrained meaning
+- Components cannot be arbitrarily modified without breaking the explanation
+- The explanation is falsifiable by specific data conditions
+- It addresses potential cognitive biases and counterarguments preemptively
+
+### Good Example of Hard-to-Vary Explanation:
+**Decision**: Allocate additional food program funding to high-need schools
+
+**Hard-to-vary explanation**: "Schools with free meal eligibility rates above 75% and enrollment over 500 students should receive priority funding because they serve the largest number of food-insecure children. This explanation is hard-to-vary because changing either the eligibility threshold or minimum enrollment would fundamentally alter the targeting rationale. It's falsifiable - data could show these schools already receive adequate funding."
+
+### Poor Example (Easy-to-Vary Explanation):
+**Decision**: Allocate additional food program funding to high-need schools
+
+**Explanation**: "Schools with high poverty rates should get more funding because they need it more."
+
+This is easy to vary - "high poverty" is undefined, and "need it more" is subjective. It lacks data constraints and isn't falsifiable.
+
+## Task
+For each decision scenario, generate:
+1. One direct primary question that precisely addresses the core decision need
+2. Only 3-4 high-impact refinement questions that significantly enhance decision quality
+
+## Dataset Entries
+{json.dumps(dataset_entries, indent=2)}
+
+## Database Schema Information
+{json.dumps(schema_data, indent=2)}
+
+## Dataset Statistical Metadata
+This section provides detailed statistical information about the datasets, including record counts, data distributions, and column properties:
+{json.dumps(relevant_stats, indent=2)}
+
+## Relevant Evidence
+{json.dumps(all_relevant_evidence, indent=2)}
+
+## Decision-First Question Generation Algorithm
+Follow this sequential pipeline to generate questions, with each stage increasingly focused on decision relevance:
+
+### STAGE 1: DECISION CONTEXT ANALYSIS
+1.1 Identify the core decision being made:
+   - What specific action needs to be taken?
+   - What alternatives are being considered?
+   - What resources are being allocated?
+
+1.2 Determine critical decision criteria:
+   - What quantifiable metrics would indicate success?
+   - What thresholds or benchmarks are relevant?
+   - What timeframe applies to this decision?
+
+1.3 Identify key uncertainties:
+   - What information gaps create the most risk?
+   - Which assumptions, if wrong, would most damage the decision quality?
+   - What historical patterns or trends should be validated?
+
+### STAGE 2: VULNERABILITY ASSESSMENT
+Identify only the 1-2 most critical cognitive biases likely to affect this specific decision:
+{json.dumps(vulnerability_categories, indent=2)}
+
+2.1 For each identified critical bias:
+   - Explain exactly how this bias threatens this specific decision
+   - Detail what data pattern would indicate this bias is present
+   - Formulate a precise question that directly exposes or mitigates this bias
+   - Specify how answering this question would make the decision more robust
+
+2.2 Example bias-mitigating questions:
+   - For confirmation bias: "What data contradicts our initial hypothesis that [X] drives [Y]?"
+   - For availability bias: "Beyond the commonly cited factors, what other variables show statistical correlation with [outcome]?"
+   - For base rate neglect: "What is the actual frequency of [event] in the entire population, not just in obvious cases?"
+
+### STAGE 3: DATA STRUCTURE VALIDATION
+Identify only the most decision-relevant data patterns:
+{json.dumps(schema_categories, indent=2)}
+
+3.1 Map critical decision factors to specific database elements:
+   - Identify the exact tables containing decision-relevant data
+   - List the precise columns needed for analysis
+   - Determine join conditions required to connect relevant data
+
+3.2 Assess data quality for decision-critical fields:
+   - For columns flagged as high_null_numeric: "How would results change if NULLs were handled by [specific alternative methods]?"
+   - For imbalanced columns: "Does the analysis hold when controlling for the imbalance in [column]?"
+   - For skewed distributions: "How do results differ when using median vs. mean for [column]?"
+
+3.3 Validate data sufficiency:
+   - Formulate questions that verify whether enough data exists for reliable analysis
+   - Address potential sampling bias or coverage issues
+   - Check for time period consistency and completeness
+
+### STAGE 4: ARGUMENT STRENGTHENING
+Identify the weakest component in the decision argument chain:
+{json.dumps(toulmin_components, indent=2)}
+
+4.1 Analyze the Toulmin argument structure for this decision:
+   - Claim: What is being asserted?
+   - Evidence: What data directly supports this?
+   - Warrant: What reasoning connects evidence to the claim?
+   - Backing: What supports the warrant itself?
+   - Qualifier: What limits the scope or certainty?
+   - Rebuttal: What conditions would invalidate the claim?
+
+4.2 Identify the 1-2 weakest components in this structure:
+   - Formulate a question that directly strengthens this component
+   - Explain exactly how answering this question would reinforce the argument
+   - Ensure the question is answerable with available data
+
+4.3 Example argument-strengthening questions:
+   - For weak evidence: "What is the statistical significance of the difference between [control] and [treatment]?"
+   - For weak warrant: "Do we see the same relationship between [X] and [Y] across all subgroups, or only in specific cases?"
+   - For weak backing: "What previous research or historical patterns support our assumption that [X]?"
+
+### STAGE 5: COUNTER-ARGUMENT TESTING
+Identify the strongest potential challenge to the decision:
+{json.dumps(counterargument_categories, indent=2)}
+
+5.1 Consider these categories of potential counter-arguments:
+   - Conclusion rebuttals: Alternative outcomes from the same evidence
+   - Premise rebuttals: Challenges to the factual basis or data
+   - Argument undercutters: Flaws in the reasoning chain
+   - Framing challenges: Alternative ways to conceptualize the problem
+
+5.2 Select the most formidable counter-argument:
+   - Determine what data would be needed to test this counter-argument
+   - Formulate a precise question that directly addresses this challenge
+   - Ensure the question can be answered using available data
+
+5.3 Example counter-argument testing questions:
+   - "If we segment the data by [alternative factor], does the primary relationship still hold?"
+   - "What happens to our conclusion if we exclude outliers above the 95th percentile?"
+   - "Is there a non-linear relationship between [X] and [Y] that our analysis is missing?"
+
+### STAGE 6: TEMPORAL ANALYSIS AND TREND VALIDATION
+6.1 Identify time-based patterns critical to the decision:
+   - Formulate questions that explore how key metrics have changed over time
+   - Consider seasonality, growth rates, or pattern shifts
+   - Look for inflection points or discontinuities
+
+6.2 Example trend validation questions:
+   - "Has the correlation between [X] and [Y] strengthened or weakened over the past [time period]?"
+   - "At what point did [metric] begin to show significant change, and what other factors changed at that time?"
+   - "Are the observed patterns consistent across different time scales (daily, monthly, yearly)?"
+
+### STAGE 7: QUESTION SET OPTIMIZATION
+**Critical:** Produce a minimal set of questions by:
+
+7.1 Evaluate each candidate question on these dimensions:
+   - **Decision impact**: How significantly would the answer change the decision? (High/Medium/Low)
+   - **Answerability**: How directly can it be answered with available data? (High/Medium/Low)
+   - **Uniqueness**: Does it provide insight not covered by other questions? (High/Medium/Low)
+   - **Bias mitigation**: Does it address a critical cognitive vulnerability? (High/Medium/Low)
+
+7.2 Prioritize questions with the highest combined score across these dimensions
+   - Retain only the top 5 questions that collectively provide the most decision value
+   - Ensure at least one question from each critical pillar is included
+   - Apply a self-critique to each final question: "How might this question fail to produce useful insight?"
+   - Revise questions that fail this critique
+
+7.3 Final check:
+   - Verify each question is directly answerable with SQL queries
+   - Ensure each question has a clear, unique purpose
+   - Confirm the set collectively builds toward a hard-to-vary explanation
+
+## Response Format
+Provide your response as a JSON array, with one object for each dataset entry:
+
+```json
+[
+  {
+    "dataset_id": 1,
+    "bird_id": 101,
+    "original_question": "The user's original question",
+    "decision_context": "The user's decision context",
+    "primary_question": {
+      "question": "The most direct, specific question formulation that precisely addresses the core decision need",
+      "explanation": "Brief explanation of how this addresses the core decision need"
+    },
+    "refinement_questions": [
+      {
+        "question": "A precise, specific question formulation (not broad or general)",
+        "pillar": "One of: 'Vulnerability Assessment', 'Data Structure Validation', 'Argument Strengthening', or 'Counter-Argument Testing'",
+        "component": "The specific component within the pillar (e.g., the specific bias, data pattern, argument component, or counter-argument type)",
+        "decision_impact": "Specific explanation of how this question improves the decision, with explicit connection to decision quality",
+        "bias_addressed": "If from Vulnerability pillar, the specific cognitive bias this mitigates (otherwise 'N/A')",
+        "data_quality_dimension": "If from Data Structure pillar, the data quality issue addressed (otherwise 'N/A')",
+        "argument_component": "If from Argument pillar, the specific Toulmin component strengthened (otherwise 'N/A')",
+        "counter_argument_type": "If from Counter-Argument pillar, the type of counter-argument tested (otherwise 'N/A')",
+        "rationale": "Why this question is in the top 3-4 most valuable questions for this decision, including what would be missed without it"
+      }
+      // Only 3-4 refinement questions maximum
+    ]
+  }
+]
+```
+
+## Critical Requirements
+1. **Generate specific, not general questions** - "How does the average loan default rate vary by income quintile?" not "How do demographics affect defaults?"
+2. **Prioritize decision relevance**
+3. **Maximum of 4 refinement questions** per dataset entry
+4. **Every question must be directly answerable** using SQL queries against the database schema
+5. **Questions must explicitly connect** to data columns and tables in the schema
+6. **Ensure questions address trends and alternative explanations** which are often overlooked
+7. **Self-critique each question** to ensure it provides unique, actionable insight
+8. **Questions should build toward hard-to-vary explanations** by being specific, data-constrained, and falsifiable

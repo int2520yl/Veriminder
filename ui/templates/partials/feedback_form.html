@@ -1,0 +1,146 @@
+<div class="form-container card mb-4">
+    <div class="card-header bg-light">
+        <h3 class="mb-0">Feedback Request</h3>
+        <div class="text-muted small">
+            Before you leave, please provide feedback to help us improve our tool
+        </div>
+    </div>
+    <div class="card-body">
+        <form id="feedback-form" onsubmit="return feedbackSubmit(event)">
+            <div class="mb-4">
+                <label class="form-label fw-bold">Scenario Realism:</label>
+                <p class="text-muted small mb-2">How realistic was the scenario you tested? i.e. a business user
+                    (without a statistics background) asks question very similar to the one in you had while faced with
+                    a similar decision?</p>
+
+                <div class="rating-container d-flex justify-content-between align-items-center bg-light p-3 rounded">
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="scenario_realism" id="realism1" value="1" autocomplete="off" required>
+                        <label class="btn btn-outline-secondary" for="realism1">1<br><small>Not at All</small></label>
+                    </div>
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="scenario_realism" id="realism2" value="2" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="realism2">2</label>
+                    </div>
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="scenario_realism" id="realism3" value="3" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="realism3">3</label>
+                    </div>
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="scenario_realism" id="realism4" value="4" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="realism4">4</label>
+                    </div>
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="scenario_realism" id="realism5" value="5" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="realism5">5<br><small>Almost
+                            Always</small></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-bold">Effectiveness of System Suggestions:</label>
+                <p class="text-muted small mb-2">How effective were the system's suggested follow-up questions in
+                    addressing any weaknesses in the analysis resulting from the initial question?</p>
+
+                <div class="rating-container d-flex justify-content-between align-items-center bg-light p-3 rounded">
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="suggestion_effectiveness" id="effectiveness1" value="1" autocomplete="off" required>
+                        <label class="btn btn-outline-secondary" for="effectiveness1">1<br><small>Ineffective</small></label>
+                    </div>
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="suggestion_effectiveness" id="effectiveness2" value="2" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="effectiveness2">2</label>
+                    </div>
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="suggestion_effectiveness" id="effectiveness3" value="3" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="effectiveness3">3</label>
+                    </div>
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="suggestion_effectiveness" id="effectiveness4" value="4" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="effectiveness4">4</label>
+                    </div>
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="suggestion_effectiveness" id="effectiveness5" value="5" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="effectiveness5">5<br><small>Very Effective</small></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-bold">Clarity of Rationale:</label>
+                <p class="text-muted small mb-2">How clear was the explanation provided for why the system suggested
+                    each follow-up question?</p>
+
+                <div class="rating-container d-flex justify-content-between align-items-center bg-light p-3 rounded">
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="rationale_clarity" id="clarity1" value="1" autocomplete="off" required>
+                        <label class="btn btn-outline-secondary" for="clarity1">1<br><small>Confusing</small></label>
+                    </div>
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="rationale_clarity" id="clarity2" value="2" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="clarity2">2</label>
+                    </div>
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="rationale_clarity" id="clarity3" value="3" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="clarity3">3</label>
+                    </div>
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="rationale_clarity" id="clarity4" value="4" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="clarity4">4</label>
+                    </div>
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="rationale_clarity" id="clarity5" value="5" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="clarity5">5<br><small>Very Clear</small></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-bold">Impact of Follow-up Questions:</label>
+                <p class="text-muted small mb-2">Overall, how did the inclusion of follow-up questions impact the
+                    quality of the analysis?</p>
+
+                <div class="rating-container d-flex justify-content-between align-items-center bg-light p-3 rounded">
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="question_impact" id="impact1" value="1" autocomplete="off" required>
+                        <label class="btn btn-outline-secondary" for="impact1">1<br><small>No Impact</small></label>
+                    </div>
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="question_impact" id="impact2" value="2" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="impact2">2</label>
+                    </div>
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="question_impact" id="impact3" value="3" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="impact3">3</label>
+                    </div>
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="question_impact" id="impact4" value="4" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="impact4">4</label>
+                    </div>
+                    <div class="rating-option text-center">
+                        <input type="radio" class="btn-check" name="question_impact" id="impact5" value="5" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="impact5">5<br><small>Major
+                            Improvement</small></label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="feedback-error" class="alert alert-danger" style="display: none;"></div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                <button type="submit" class="btn btn-primary px-4" id="submit-feedback-btn">
+                    <span class="btn-text">Submit Feedback</span>
+                    <span class="spinner-border spinner-border-sm ms-1" role="status" style="display: none;"></span>
+                </button>
+            </div>
+        </form>
+
+        
+        <div id="feedback-success" class="alert alert-success mt-3" style="display: none;">
+            <h4 class="alert-heading"><i class="fas fa-check-circle me-2"></i>Thank you for your feedback!</h4>
+            <p>Your feedback has been successfully submitted and will help us improve our tool.</p>
+            <p class="mb-0"><strong>If you're part of our user study program, you can now close this window.</strong></p>
+        </div>
+    </div>
+</div>

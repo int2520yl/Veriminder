@@ -1,0 +1,4 @@
+{
+  "system_message": "You are a database expert who knows every intricacy of SQL query generation.",
+  "task_description": "Generate a SQL query to answer the following question."
+}

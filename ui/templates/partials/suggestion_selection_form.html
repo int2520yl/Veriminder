@@ -1,0 +1,81 @@
+<div class="suggestions-container card mb-4">
+    <div class="card-header">
+        <h3>Also our system has these suggestions for you, to further refine your decision</h3>
+    </div>
+    <div class="card-body">
+        <p class="mb-3">Select one or more to run as a follow-on queries to run:</p>
+
+        
+        <div id="suggestions-streaming" class="streaming-container" style="display: none;">
+            <div class="stream-status">
+                <span class="status-icon status-connecting"></span>
+                <span id="suggestions-status">Generating suggestions...</span>
+            </div>
+            <div class="stream-progress">
+                <div id="suggestions-progress-bar" class="progress-bar" style="width: 0%"></div>
+            </div>
+            <div id="suggestions-message" class="streaming-text mt-3"></div>
+        </div>
+
+        
+        <div id="suggestions-loading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading suggestions...</span>
+            </div>
+            <p class="mt-2">Generating suggestions based on your question and decision context...</p>
+        </div>
+
+        
+        <form id="suggestions-form">
+            <div id="suggestions-list" class="mb-4">
+                
+            </div>
+
+            <div id="suggestions-error" class="alert alert-danger" style="display: none;"></div>
+
+            
+            <div class="form-buttons">
+                <button type="button" id="submit-suggestions" class="btn btn-primary" onclick="suggestionSelectionSubmit()" style="display: none;">
+                    Process Selected Suggestions
+                </button>
+            </div>
+        </form>
+
+        
+        <div id="process-suggestions-streaming" class="streaming-container mt-4" style="display: none;">
+            <div class="stream-status">
+                <span class="status-icon status-connecting"></span>
+                <span id="process-suggestions-status">Processing selected suggestions...</span>
+            </div>
+            <div class="stream-progress">
+                <div id="process-suggestions-progress-bar" class="progress-bar" style="width: 0%"></div>
+            </div>
+            <div id="process-suggestions-message" class="streaming-text mt-3"></div>
+        </div>
+
+        
+        <div id="suggestion-results" class="mt-4" style="display: none;">
+            <h4>Results for Insights Refinement Queries</h4>
+
+            
+            <div class="mb-3">
+                <div class="reasoning-container p-3 bg-light rounded">
+                    <div id="suggestion-reasoning-loader" class="text-center py-3">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Processing queries...</span>
+                        </div>
+                        <p class="mt-2">Processing your selected queries...</p>
+                    </div>
+                    <div id="suggestion-reasoning-content" style="display: none;">
+                        
+                    </div>
+                </div>
+            </div>
+
+            
+            <div id="suggestion-answers">
+                
+            </div>
+        </div>
+    </div>
+</div>

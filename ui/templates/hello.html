@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - Veritable-MQs{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <h2 class="mb-4">Welcome to VeriMinder</h2>
+                <p class="lead">
+                    This tool helps you make informed decisions based on data analysis.
+                </p>
+                <p>
+                    Please select the appropriate option below to continue:
+                </p>
+                <div class="mt-5 d-flex justify-content-center gap-4">
+
+                    <div class="card border-secondary mb-3" style="max-width: 18rem;">
+                        <div class="card-header bg-secondary text-white">General Users</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Live Tool</h5>
+                            <p class="card-text">Access the tool directly to analyze your own queries.</p>
+                            <a href="/interface?auto_user=1&start_new=1" class="btn btn-secondary">Use Live Tool</a>
+                        </div>
+                    </div>
+
+                    <div class="card border-primary mb-3" style="max-width: 18rem;">
+                        <div class="card-header bg-primary text-white">User Testing</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Type 1 Participants</h5>
+                            <p class="card-text">For user testing participants who want to test the data-driven decision
+                                support tool.</p>
+                            <a href="/user_testing" class="btn btn-primary">Enter User Testing</a>
+                        </div>
+                    </div>
+
+                    <div class="card border-success mb-3" style="max-width: 18rem;">
+                        <div class="card-header bg-success text-white">Analyst Testing</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Type 2 Participants</h5>
+                            <p class="card-text">For analysts who want to evaluate the quality of model-generated
+                                questions.</p>
+                            <a href="/analyst" class="btn btn-success">Enter Analyst Evaluation</a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<p>VeriMinder</p>
+{% endblock %}
+
+{% block extra_head %}
+<style>#demo-video {
+  display: block;
+  margin: 0 auto;
+  max-height: 600px;
+}
+
+.video-container {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+    @media (max-width: 768px) {
+        #demo-video {
+            max-height: 300px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const video = document.getElementById('demo-video');
+    });
+</script>
+{% endblock %}

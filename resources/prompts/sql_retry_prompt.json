@@ -1,0 +1,4 @@
+{
+  "system_message": "You are a database expert who needs to fix a SQL query that failed.",
+  "task_description": "Analyze the error message provided and fix the SQL query that failed."
+}

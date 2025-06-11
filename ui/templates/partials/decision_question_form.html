@@ -1,0 +1,146 @@
+<div class="form-container card mb-4">
+    <div class="card-header">
+        <h2>Data Analysis Form</h2>
+    </div>
+    <div class="card-body">
+        <form id="decision-question-form" onsubmit="return decisionQuestionSubmit(event)">
+            <div class="mb-3">
+                <label for="question" class="form-label required-field">Please briefly type in the question you need to
+                    be answered based on the available data</label>
+                <textarea class="form-control" id="question" name="question" rows="3" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="decision" class="form-label required-field">Forgive our curiosity, but also let us know the
+                    data based decision you intend to make based on this information</label>
+                <textarea class="form-control" id="decision" name="decision" rows="3" required></textarea>
+            </div>
+
+            
+            <div class="alert alert-info mt-4 border-left border-info" style="border-left-width: 5px; background-color: #e8f4f8;">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-database me-3" style="font-size: 2rem; color: #0d6efd;"></i>
+                    <div>
+                        <h5 class="mb-1" style="color: #0d6efd;">⚠️ DATASET LIMITATION CHECK ⚠️</h5>
+                        <p class="mb-0">Please confirm your question and decision can be answered using the <strong>BIRD-DEV dataset</strong> as this demo system is currently limited to these tables.</p>
+                        <a href="https://bird-bench.github.io/" target="_blank" class="mt-2 d-inline-block">
+                            <i class="fas fa-external-link-alt me-1"></i> View BIRD-DEV dataset details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div class="form-text">
+                    <strong>Current Reasoning Model:</strong> Google Gemini-2.0-Flash
+                </div>
+            </div>
+
+            
+            <div id="study-mode-notice" class="alert alert-info mt-3" style="display: none;">
+                Since you are part of a study group, this form is pre-filled and cannot be edited by you - click
+                "Submit" button to continue with your testing.
+            </div>
+
+            <div id="form-error" class="alert alert-danger mt-3" style="display: none;"></div>
+
+            <div class="form-buttons mt-3" id="form-buttons-container">
+                <button type="submit" class="btn btn-primary btn-submit" id="submit-question">Submit</button>
+                <button type="button" class="btn btn-secondary" id="reset-form" onclick="resetQuestionForm()">Reset
+                </button>
+            </div>
+        </form>
+
+        
+        <div id="nl-to-sql-streaming" class="streaming-container mt-4" style="display: none;">
+            <div class="stream-status">
+                <span class="status-icon status-connecting"></span>
+                <span id="nl-to-sql-status">Processing your question...</span>
+            </div>
+            <div class="stream-progress">
+                <div id="nl-to-sql-progress-bar" class="progress-bar" style="width: 0%"></div>
+            </div>
+            <div id="nl-to-sql-message" class="streaming-text mt-3"></div>
+        </div>
+
+        
+        <div id="initial-results" class="mt-4" style="display: none;">
+            <div class="results-warning mb-3">
+                <strong>Note:</strong> These results are based on automatically generated queries and we suggest you
+                cross-verify the queries before using the generated results.
+            </div>
+
+            
+            <div class="mb-4">
+                <h4 class="mb-3">Reasoning Information from Gemini Flash</h4>
+                <div id="reasoning-content" class="p-3 bg-light rounded">
+                    <div class="reasoning-loader text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Processing your question...</p>
+                    </div>
+                    <div class="reasoning-text" style="display: none;">
+                        
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="mb-4">
+                <div class="d-flex align-items-center mb-2">
+                    <h4 class="mb-0">Here is the answer to your question</h4>
+                    <div class="query-tooltip ms-2" title="View SQL Query">
+                        <i class="fas fa-code tooltip-icon"></i>
+                        <div class="tooltip-content">
+                            <strong>SQL Query:</strong>
+                            <pre id="sql-query">-- SQL query will be populated here</pre>
+                        </div>
+                    </div>
+                </div>
+                <div id="answer-content" class="p-3 bg-light rounded">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const questionField = document.getElementById('question');
+        const decisionField = document.getElementById('decision');
+        const resetButton = document.getElementById('reset-form');
+        const studyModeNotice = document.getElementById('study-mode-notice');
+
+        if (window.isStudyMode) {
+            if (questionField) {
+                questionField.readOnly = true;
+                questionField.classList.add('bg-light');
+            }
+
+            if (decisionField) {
+                decisionField.readOnly = true;
+                decisionField.classList.add('bg-light');
+            }
+
+            if (resetButton) {
+                resetButton.style.display = 'none';
+            }
+
+            if (studyModeNotice) {
+                studyModeNotice.style.display = 'block';
+            }
+        }
+    });
+
+    function resetQuestionForm() {
+        document.getElementById('question').value = '';
+        document.getElementById('decision').value = '';
+
+        document.getElementById('form-error').style.display = 'none';
+
+        document.getElementById('question').focus();
+    }
+</script>
+
