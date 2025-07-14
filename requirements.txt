@@ -1,7 +1,8 @@
 Flask
 mysql-connector-python
-google-generativeai
 anthropic
 numpy
 pandas
 pgmpy
+google
+google.genai
