@@ -18,7 +18,7 @@ This guide provides the essential steps to get the Veriminder application runnin
     cd Veriminder_Submission
 
     # Create and activate a virtual environment
-    python -m venv venv
+    python3 -m venv venv
     source venv/bin/activate  # On Windows: venv\Scripts\activate
 
     # Install required packages
